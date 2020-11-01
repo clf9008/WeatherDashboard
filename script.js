@@ -13,3 +13,5 @@ function initPage() {
 
     console.log(searchHistory);
 }
+
+cont APIkey = "14fd9df994adf232eec7280aaaedb3db"
