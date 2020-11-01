@@ -55,5 +55,19 @@ function getLocationWeather(locaitonName) {
         let forecastQueryURL = "https://api.openweathermap.org/data/2.5/forecast?id=" + cityID + "&appid=" + APIKey;
         axios.get(forecastQueryURL)
         .then(function(response){
+            console.log(response);
+            //enter the constant forecast into block scope that fetches and displays 5-day forecast 
+            const forecastEls = document.querySelectorAll(".forecast");
+            //for loop to display forecast data from openweather API server
+            for (i=0; i<forecastEls.length; i++) {
+                forecastEls[i].innerHTML = "";
+                const forecastIndex = i*8 + 4;
+                const forecastDate = new Date(response.data.list[forecastIndex].dt * 1000);
+                const forecastDay = forecastDate.getDate();
+                const forecastMonth = forecastDate.getMonth() + 1;
+                const forecastYear = forecastDate.getFullYear();
+                const forecastDateEl = document.createElement("p");
+                forecastDateEl.setAttribute("class","mt-3 mb-0 forecast-date");
+                forecastDateEl.innerHTML = forecastMonth + "/" + forecastDay + "/" + forecastYear; //appended inner HTML to display these constants
 
 }
