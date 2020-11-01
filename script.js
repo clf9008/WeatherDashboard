@@ -31,11 +31,23 @@ function getLocationWeather(locaitonName) {
             const month = currentDate.getMonth() + 1;
             const year = currentDate.getFullYear();
             nameEl.innerHTML = response.data.name + " (" + month + "/" + day + "/" + year + ") ";
-
+//let weatherPic be declared into block scope and append the HTML with data from openweathermap API including temp, humidity, wind-speed, etc"
             let weatherPic = response.data.weather[0].icon;
             currentPicE1.setAttribute("src","https://openweathermap.org/img/wn/" + weatherPic + "@2x.png");
             currentPicE1.setAttribute("alt",response.data.weather[0].description);
             currentTempE1.innerHTML = "Temperature: " + k2f(response.data.main.temp) + "&#176F"
-
-    })
+            currentHumidityEl.innerHTML = "Humidity: " + response.data.main.humidity + "%";
+            currentWindEl.innerHTML = "Wind Speed: " + response.data.wind.speed + " MPH";
+//let latitude, longitude be declared into block scope. let UVQueryURL be declared into block scopre and display UV-index and danger index
+            let lat = response.data.coord.lat;
+            let lon = response.data.coord.lon;
+            let UVQueryURL = "https://api.openweathermap.org/data/2.5/uvi/forecast?lat=" + lat + "&lon=" + lon + "&appid=" + APIKey + "&cnt=1";
+            axios.get(UVQueryURL)
+        .then(function(response){
+            let UVIndex = document.createElement("span");
+            UVIndex.setAttribute("class","badge badge-danger");
+            UVIndex.innerHTML = response.data[0].value;
+            currentUVEl.innerHTML = "UV Index: ";
+            currentUVEl.append(UVIndex);
+    });
 }
