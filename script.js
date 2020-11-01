@@ -88,6 +88,17 @@ function getLocationWeather(locaitonName) {
                 forecastEls[i].append(forecastHumidityEl);
                 }
             })
-        });  
+        });
+    }
 
-}
+//creating and event lister for the search function and storing it's data into LocalStorage
+
+searchE1.addEventListener("click", funciton() {
+    //entering a constant into block scope for searchLocal and the input value
+    const searchLocal = inputE1.value;
+    getLocationWeather(searchLocal);
+    //push input value from searchLocal to local storage
+    searchHistory.push(searchLocal);
+    localStorage.setItem("search", JSON.stringify(searchHistory));
+    renderSearchHistory();
+})
