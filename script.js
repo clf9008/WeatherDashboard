@@ -50,4 +50,10 @@ function getLocationWeather(locaitonName) {
             currentUVEl.innerHTML = "UV Index: ";
             currentUVEl.append(UVIndex);
     });
+//let locationID be declared into block scope and used saved location name to fetch 5-day forcecast
+    let locationID = response.data.id;
+        let forecastQueryURL = "https://api.openweathermap.org/data/2.5/forecast?id=" + cityID + "&appid=" + APIKey;
+        axios.get(forecastQueryURL)
+        .then(function(response){
+
 }
