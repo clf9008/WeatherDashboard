@@ -1,143 +1,46 @@
-//funciton to append HTML and declare into Global Memory constants of location input, search, history, etc.
-function initPage() {
-    const  inputE1 = document.getElementById("location-input");
-    const  searchE1 = document.getElementById("location-search");
-    const  clearE1 = document.getElementById("clear-location");
-    const  nameE1 = document.getElementById("location-name");
-    const  currentPicE1 = document.getElementById("location-pic");
-    const  currentTempE1 = document.getElementById("temp");
-    const  currentHumidtyE1 = document.getElementById("humidity");
-    const  currentWindE1 = document.getElementById("wind-speed");
-    const  currentUVIndexE1 = document.getElementById("UV-index");
-    const  historyE1 = document.getElementById("history");
-    let locationHistory = JSON.parse(localStorage.getItem("search")) || [];
-
-    console.log(searchHistory);
-}
-//costant to declare into Global Memory the API Key for the Open Weather API server
-const APIkey = "14fd9df994adf232eec7280aaaedb3db"
-
-//funciton to get data from API server that has been searched for by the user
-function getLocationWeather(locaitonName) {
-//let queryURL be declared into block scope and search open weather api, location, and use my APIkey for permission
-    let queryURL = "https://api.openweathermap.org/data/2.5/weather?q=" + locationName + "&appid=" + APIkey;
-    axios.get(queryURL)
-    .then(function(response){
-        console.log(response);
-        //Parse response to display the current conditions for the locations that has been searched
-        const currentDate = new Date(response.data.dt*1000);
-            console.log(currentDate);
-            const day = currentDate.getDate();
-            const month = currentDate.getMonth() + 1;
-            const year = currentDate.getFullYear();
-            nameEl.innerHTML = response.data.name + " (" + month + "/" + day + "/" + year + ") ";
-//let weatherPic be declared into block scope and append the HTML with data from openweathermap API including temp, humidity, wind-speed, etc"
-            let weatherPic = response.data.weather[0].icon;
-            currentPicE1.setAttribute("src","https://openweathermap.org/img/wn/" + weatherPic + "@2x.png");
-            currentPicE1.setAttribute("alt",response.data.weather[0].description);
-            currentTempE1.innerHTML = "Temperature: " + k2f(response.data.main.temp) + "&#176F"
-            currentHumidityEl.innerHTML = "Humidity: " + response.data.main.humidity + "%";
-            currentWindEl.innerHTML = "Wind Speed: " + response.data.wind.speed + " MPH";
-//let latitude, longitude be declared into block scope. let UVQueryURL be declared into block scopre and display UV-index and danger index
-            let lat = response.data.coord.lat;
-            let lon = response.data.coord.lon;
-            let UVQueryURL = "https://api.openweathermap.org/data/2.5/uvi/forecast?lat=" + lat + "&lon=" + lon + "&appid=" + APIKey + "&cnt=1";
-            axios.get(UVQueryURL)
-        .then(function(response){
-            let UVIndex = document.createElement("span");
-            UVIndex.setAttribute("class","badge badge-danger");
-            UVIndex.innerHTML = response.data[0].value;
-            currentUVEl.innerHTML = "UV Index: ";
-            currentUVEl.append(UVIndex);
-    });
-//let locationID be declared into block scope and used saved location name to fetch 5-day forcecast
-    let locationID = response.data.id;
-        let forecastQueryURL = "https://api.openweathermap.org/data/2.5/forecast?id=" + cityID + "&appid=" + APIKey;
-        axios.get(forecastQueryURL)
-        .then(function(response){
-            console.log(response);
-            //enter the constant forecast into block scope that fetches and displays 5-day forecast 
-            const forecastEls = document.querySelectorAll(".forecast");
-            //for loop to display forecast data from openweather API server
-            for (i=0; i<forecastEls.length; i++) {
-                //append the innerHTML document with the following forecast data
-                forecastEls[i].innerHTML = "";
-                //enter constants into block scope for forecasat data from openweather API server
-                const forecastIndex = i*8 + 4;
-                const forecastDate = new Date(response.data.list[forecastIndex].dt * 1000);
-                const forecastDay = forecastDate.getDate();
-                const forecastMonth = forecastDate.getMonth() + 1;
-                const forecastYear = forecastDate.getFullYear();
-                const forecastDateEl = document.createElement("p");
-                //set attributes to forecastDateE1 and append innerHTML document 
-                forecastDateEl.setAttribute("class","mt-3 mb-0 forecast-date");
-                forecastDateEl.innerHTML = forecastMonth + "/" + forecastDay + "/" + forecastYear; //appended inner HTML to display these constants
-                forecastEls[i].append(forecastDateEl);
-                //entering a constant into block scope to display image of weather in forecast
-                const forecastWeatherEl = document.createElement("img");
-                forecastWeatherEl.setAttribute("src","https://openweathermap.org/img/wn/" + response.data.list[forecastIndex].weather[0].icon + "@2x.png");
-                forecastWeatherEl.setAttribute("alt",response.data.list[forecastIndex].weather[0].description);
-                //append the forecast weather with temperature data 
-                forecastEls[i].append(forecastWeatherEl);
-                const forecastTempEl = document.createElement("p"); //entering a constant into block scope that appends HTML to display forecast temp
-                forecastTempEl.innerHTML = "Temp: " + k2f(response.data.list[forecastIndex].main.temp) + " &#176F";
-                //append the forecast weather with humidity data 
-                forecastEls[i].append(forecastTempEl);
-                const forecastHumidityEl = document.createElement("p");
-                forecastHumidityEl.innerHTML = "Humidity: " + response.data.list[forecastIndex].main.humidity + "%";
-                forecastEls[i].append(forecastHumidityEl);
-                }
-            })
-        });
+//function to create a location search list that will be stored into global memory
+function locationSearch(locationSearchList) {
+    $("#search-list").empty();//populate empty
+//entering a variable into block scope creates a list that will store what locations are searched and store them as a list
+    var keys = object.keys(locationSearchList);
+    for (var i = 0; i < keys.length; i++){
+        var locationEntry = $("<button>");
+        locationEntry.addClass("list-group-item list-group-item-action");
+//entering a variable into block scope that will split the string value to lowercase or uppercase
+        var splitStr = keys[i].toLowerCase().split(" ");
+        for (var j = 0; j < splitStr.lentgh; j++) {
+            splitStr[j] =
+            splitStr[j].charAt(0).toUpperCase() + splitStr[j].substring(1);
+        }
+        //entering a variable into block scope that will add join searches to list that are capitalized
+        var locationUppercase= splitStr.join(" ");
+        locationEntry.text(titleCasedCity);
+    //append the html document to display a search list for search locations
+        $("#search-list").append(locationEntry);
     }
-
-//creating and event lister for the search function and storing it's data into LocalStorage
-
-searchE1.addEventListener("click", funciton() {
-    //entering a constant into block scope for searchLocal and the input value
-    const searchLocal = inputE1.value;
-    getLocationWeather(searchLocal);
-    //push input value from searchLocal to local storage
-    searchHistory.push(searchLocal);
-    localStorage.setItem("search", JSON.stringify(searchHistory));
-    renderSearchHistory();
-})
-
-//creating an event listener for the clear history function
-clearE1.addEventListener("click"; funcionO() {
-    searchHistory[];
-    renderSearchHistory();
-})
-
-//function to convert kelvins to farenheight 
-function k2f(K) {
-    return Math.floor((K - 273.15) *1.8 +32);
 }
-
-//function to render search history
-funciton renderSearchHistory() {
-    //append innerHTML with history element
-    historyE1.innerHTML = "";
-    //creating a for loop to display search history in order of input
-   for (let i=0; i<searchHistory.length; i++) {
-       //entering a constant into block scope that creates and input element for search history
-       const historyItem = document.createElement("input");
-       historyItem.setAttribute("type","text");
-       historyItem.setAttribute("readonly"; "true")
-       historyItem.setAttribute("class", "form-control d-block bg-white");
-       historyItem.setAttribute("value", searchHistory[i]);
-       //adding and event listener get location history
-       historyItem.addEventListener("click", funciton {
-           getLocationWeather(historyItem.value);
-       })
-       historyE1.append(historyItem);
-   }
-}
-//saves location history requests, displays them underneath search form so page atuomatically loads forecast for last location searched 
-renderSearchHistory();
-if (searchHistory.length > 0) {
-    getLocationWeather(searchHistory[searchHistory.length - 1]);
-}
-
-}
-initPage();
+//entering a function into global memory that will fetch the weather of searched location
+    function getLocationWeather(city, locationSearchList) {
+        createSearchList(locationSearchList);
+      //entering a variable into block scope that quers the openweathermap API for the current weather conditions
+        var queryURL =
+          "https://api.openweathermap.org/data/2.5/weather?&units=imperial&appid=d66159be26bc887a3527fc689ffc14e6&q=" +
+          city;
+    //entering a variable into block scope that querys the openweathermap API for the 5-day forecast
+        var queryURL2 =
+          "https://api.openweathermap.org/data/2.5/forecast?&units=imperial&appid=d66159be26bc887a3527fc689ffc14e6&q=" +
+          city;
+        //entering a vriable into blockscope for latitude of the searched location
+        var latitude;
+       //entering a vriable into blockscope for longitude of the searched location
+        var longitude;
+      //ajay fetch metho to "get" the weather for a location input that is stored in localStoreage
+        $.ajax({
+          url: queryURL,
+          method: "GET"
+        })
+          // Store all of the retrieved data inside of an object called "weather"
+          .then(function(weather) {
+            // Log the queryURL
+            console.log(queryURL);
+         

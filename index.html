@@ -1,91 +1,128 @@
 <!DOCTYPE html>
-<html lang="en_us">
+<html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Weather Dashboard</title>
-
-<link rel="stylesheet" href="style.css">
-<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/all.min.css">
-<title>Weather Dashboard</title>
-    
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+        integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <link rel="stylesheet" href="style.css">
+    <script src="https://kit.fontawesome.com/70fcd40144.js" crossorigin="anonymous"></script>
 </head>
 
-
 <body>
-    <nav class= "navbarr-dark bg-dark">
-        <span class= "navbar-brand mb-0 h1 w-100 text-center">Weather Dashboard</span>
-    </nav>
 
-    <div class= "container">
-       
-        <div class= "row">
-            <div class= "col-4 bg-light"
-            <p class= "location-search my-1">Search for a Location</p>
-            <div class ="input-group mb-3">
-                <input id= "location-input" type="text" class="form-control" placeholder="Enter Location" aria-label="Enter Location">
-                <div class="input-group-append">
-                    <button class="btn btn-primary" type="button" id="search-button">
-                        <i class="fas fa-search"></i>
-                    </button>
-                </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-3.4.1.min.js"></script>
+
+    <header>
+        <div class="heading">
+            <div>
+                <h1>Weather Dashboard</h1>
             </div>
-            <button class="btn btn-primary mb-3" type="button" id="clear-locations">Clear Search Locations</button>
-            <form id="history"></form>
         </div>
+    </header>
 
-        <div  class="col-8">
-            <div class="row mr-0">
-                <div class="col-12 border border-dark m-3 rounded">
-                    <div class="row">
-                        <div class="col-12">
-                            <span id="location-name" class="location-name align-middle"></span>
-                            <!-- <img id="location-pic" src="location-picisite" alt=""> -->
+    <br>
+
+    <div class="container-fluid">
+        <div class=row>
+            <div class="col-md-3 pl-2">
+                <div class="card" style="width: 22rem;">
+                    <div class="card-body">
+                        <h6>Search for a City:</h6>
+                        <form class="form-inline">
+                            <div class="form-group">
+                                <input type="text" class="form-control" id="city-input">
+                            </div>
+                            <button id="search-button" type="submit" class="btn btn-primary"><i
+                                    class="fas fa-search"></i></button>
+                        </form>
+                    </div>
+                </div>
+                <div>
+                    <ul id="city-list" class="list-group"></ul>
+                </div>
+            </div>
+            <div class="col-md-9">
+                <div id="current-weather" class='card'>
+                    <div class="card-body">
+                        <div id="city-date-icon">
+                            <span id='city-name'>
+                            </span>
+                            <span id='current-icon'></span>
                         </div>
+                        <p class="card-text" id="current-temp"></p>
+                        <p class="card-text" id="current-humidity"></p>
+                        <p class="card-text" id="current-wind"></p>
+                        <p class="card-text" id="current-uv"></p>
+                        </ul>
                     </div>
-                    <div class="row">
-                        <div class="col-12">
-                            <p id="temp"></p>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-12">
-                            <p id="humitdity"></p>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-12">
-                            <p id="wind-speed"></p>
-                     </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-12">
-                            <p id="UV-index"></p>
+                </div>
+                <div class="row">
+                    <div id="forecast-weather" class="col-md-9">
+                        <h4>5-Day Forecast:</h4>
+                        <div id="forecast-cards">
+                            <div class="card forecast">
+                                <div id="forecast1" class="card-body">
+                                    <span class="card-title" id='forecast-date1'>
+                                    </span>
+                                    <span id='forecast-icon1'></span>
+                                    <p class="card-text" id="forecast-temp1"></p>
+                                    <p class="card-text" id="forecast-humidity1"></p>
+                                </div>
+                            </div>
+                            <div class="card forecast">
+                                <div id="forecast2" class="card-body">
+                                    <span class="card-title" id='forecast-date2'>
+                                    </span>
+                                    <span id='forecast-icon2'></span>
+                                    <p class="card-text" id="forecast-temp2"></p>
+                                    <p class="card-text" id="forecast-humidity2"></p>
+                                </div>
+                            </div>
+                            <div class="card forecast">
+                                <div id="forecast3" class="card-body">
+                                    <span class="card-title" id='forecast-date3'>
+                                    </span>
+                                    <span id='forecast-icon3'></span>
+                                    <p class="card-text" id="forecast-temp3"></p>
+                                    <p class="card-text" id="forecast-humidity3"></p>
+                                </div>
+                            </div>
+                            <div class="card forecast">
+                                <div id="forecast4" class="card-body">
+                                    <span class="card-title" id='forecast-date4'>
+                                    </span>
+                                    <span id='forecast-icon4'></span>
+                                    <p class="card-text" id="forecast-temp4"></p>
+                                    <p class="card-text" id="forecast-humidity4"></p>
+                                </div>
+                            </div>
+                            <div class="card forecast">
+                                <div id="forecast5" class="card-body">
+                                    <span class="card-title" id='forecast-date5'>
+                                    </span>
+                                    <span id='forecast-icon5'></span>
+                                    <p class="card-text" id="forecast-temp5"></p>
+                                    <p class="card-text" id="forecast-humidity5"></p>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
-            <div class="row">
-                <div class="col-12">
-                    <h3>5-Day Forecast</h3>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col forecast bg-primary text-white ml-3 mb-3 rounded"></div>
-                <div class="col forecast bg-primary text-white ml-3 mb-3 rounded"></div>
-                <div class="col forecast bg-primary text-white ml-3 mb-3 rounded"></div>
-                <div class="col forecast bg-primary text-white ml-3 mb-3 rounded"></div>
-                <div class="col forecast bg-primary text-white ml-3 mb-3 rounded"></div>
             </div>
         </div>
     </div>
-</div>
 
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
+        integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
+        crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment-with-locales.min.js"></script>
     <script src="script.js"></script>
-    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
 
 </body>
-
 
 </html>
