@@ -32,5 +32,10 @@ function getLocationWeather(locaitonName) {
             const year = currentDate.getFullYear();
             nameEl.innerHTML = response.data.name + " (" + month + "/" + day + "/" + year + ") ";
 
+            let weatherPic = response.data.weather[0].icon;
+            currentPicE1.setAttribute("src","https://openweathermap.org/img/wn/" + weatherPic + "@2x.png");
+            currentPicE1.setAttribute("alt",response.data.weather[0].description);
+            currentTempE1.innerHTML = "Temperature: " + k2f(response.data.main.temp) + "&#176F"
+
     })
 }
