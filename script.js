@@ -19,12 +19,18 @@ const APIkey = "14fd9df994adf232eec7280aaaedb3db"
 
 //funciton to get data from API server that has been searched for by the user
 function getLocationWeather(locaitonName) {
-
+//let queryURL be declared into block scope and search open weather api, location, and use my APIkey for permission
     let queryURL = "https://api.openweathermap.org/data/2.5/weather?q=" + locationName + "&appid=" + APIkey;
     axios.get(queryURL)
     .then(function(response){
-        
         console.log(response);
-        
+        //Parse response to display the current conditions for the locations that has been searched
+        const currentDate = new Date(response.data.dt*1000);
+            console.log(currentDate);
+            const day = currentDate.getDate();
+            const month = currentDate.getMonth() + 1;
+            const year = currentDate.getFullYear();
+            nameEl.innerHTML = response.data.name + " (" + month + "/" + day + "/" + year + ") ";
+
     })
 }
