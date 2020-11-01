@@ -20,7 +20,7 @@ function locationSearch(locationSearchList) {
     }
 }
 //entering a function into global memory that will fetch the weather of searched location
-    function getLocationWeather(city, locationSearchList) {
+function getLocationWeather(city, locationSearchList) {
         createSearchList(locationSearchList);
       //entering a variable into block scope that quers the openweathermap API for the current weather conditions
         var queryURL =
@@ -63,7 +63,7 @@ function locationSearch(locationSearchList) {
       $("#current-icon").empty();//loads current-icon the page as empty at start
       $("#current-icon").append(weatherConditions);//appends current icon when location is entered
 
-      $("#current-temp").text("Temperature: " + weather.main.temp + " °F");//display current temperature in farenheight
+      $("#current-temp").text("Temperature: " + weather.main.temp + " °F");//display current temperature in fahrenheit
       $("#current-humidity").text("Humidity: " + weather.main.humidity + "%");//display current humidity as a %
       $("#current-wind").text("Wind Speed: " + weather.wind.speed + " MPH");//display current wind-speed in MPH
     //latitude and longitude of location coordinates are stored in weather object
@@ -76,9 +76,120 @@ function locationSearch(locationSearchList) {
         latitude +
         "&lon=" +
         longitude;
-
+    //fetch method that will que URL to 'get' forcast for given location
       $.ajax({
         url: queryURL3,
         method: "GET"
-        // Store all of the retrieved data inside of an object called "uvIndex"
-      
+        //Once we 'get' the data, store all of the retrieved data inside of an object called "uvIndex"
+      }).then(function(uvIndex) {
+        console.log(uvIndex);
+        //entering a variable into local memory that will display the current UV Index and its danger level
+        var uvIndexDisplay = $("<button>");
+        uvIndexDisplay.addClass("btn btn-danger");
+        //append the html document with the data stored in the object uvIndexDisplay
+        $("#current-uv").text("UV Index: ");
+        $("#current-uv").append(uvIndexDisplay.text(uvIndex[0].value));
+        console.log(uvIndex[0].value);
+        //fetch method to 'get' data from url 'queryURL2' and store that as an object called "forecast"
+        $.ajax({
+            url: queryURL2,
+            method: "GET"
+            //Once we 'get' the data, store all of the retrieved data inside of an object called "forecast"
+          }).then(function(forecast) {
+            console.log(queryURL2);
+  
+            console.log(forecast);
+            //for Loop through the forecast list array and display a single forecast entry/time (5th entry of each day which is close to the highest temp/time of the day) from each of the 5 days
+            for (var i = 6; i < forecast.list.length; i += 8) {
+              //entering a variable into local memory for the forecast date to display as <h5>
+              var forecastDate = $("<h5>"); 
+            //declaring a variable for local memory that positions the forecast with only 5 day's displayed
+              var forecastPosition = (i + 2) / 8;
+  
+              console.log("#forecast-date" + forecastPosition);
+  
+              $("#forecast-date" + forecastPosition).empty(); //forecast date will load empty
+              $("#forecast-date" + forecastPosition).append( //append forcast date when a location is entered
+                forecastDate.text(nowMoment.add(1, "days").format("M/D/YYYY")) //display forcast date m/d/yyyy
+              );
+            //declaring a variable for local memory to display the forecast icon
+              var forecastDisplay = $("<img>");
+              forecastDisplay.attr(
+                "src",
+                "https://openweathermap.org/img/w/" + //getting the img from the openweathermap API server
+                  forecast.list[i].weather[0].icon + //adding img to forecast entered into the forecast array
+                  ".png"
+              );
+            //forecast icon will load empty and be appended as locations are entered
+              $("#forecast-icon" + forecastPosition).empty();
+              $("#forecast-icon" + forecastPosition).append(forecastIcon);
+  
+              console.log(forecast.list[i].weather[0].icon);
+            //append html document with the forecast temperature and display in fahrenheit 
+              $("#forecast-temp" + forecastPosition).text(
+                "Temp: " + forecast.list[i].main.temp + " °F"
+              );
+            //append html document with the forecast humidity and display in %
+              $("#forecast-humidity" + forecastPosition).text(
+                "Humidity: " + forecast.list[i].main.humidity + "%"
+              );
+            //appending the html document to style the forecast background color and data color
+              $(".forecast").attr(
+                "style",
+                "background-color:dodgerblue; color:white"
+              );
+            }
+          });
+        });
+      });
+  }
+//the funciton will not run until all of the elements on the HTML document have loaded
+  $(document).ready(function() {
+    //declaring a variable for local memory that saves the location search list to local storeage
+    var locationSearchListStringified = localStorage.getItem("locationSearchList");
+    //declaring a variable for local memory that parse data from location search list
+    var locationSearchList = JSON.parse(locationSearchListStringified);
+    //if the location search list is equal to the value null, load location search list function
+    if (locationSearchList == null) {
+      locationSearchList = {}; 
+    }
+  
+    locationSearch(locationSearchList);
+  //hide the current weather and forecast weather if the location search list is null
+    $("#current-weather").hide();
+    $("#forecast-weather").hide();
+  //appending the inner html document with an eventer listener for the search button
+    $("#search-button").on("click", function(event) {
+      event.preventDefault();//prevents default location from loading
+      //declaring a variable for local memory that will store location input as lowercase
+      var city = $("#location-input")
+        .val()
+        .trim()
+        .toLowerCase();
+     //checking to see if there is any text entered into the search field
+      if (city != "") {
+       
+      //if there location search list has data entered into it store that item in local storeage
+        locationSearchList[city] = true; 
+        localStorage.setItem("locationSearchList", JSON.stringify(locationSearchList));
+    //using the getLocationWeather funciton to get current weather and forecast for location search list
+        getLocationWeather(city, locationSearchList);
+    //append inner html document to display the locations current weather and forecasated weather
+      $("#current-weather").show();
+      $("#forecast-weather").show();
+      }
+    });
+  //creating and event listener funciton for the location list to bring up conditions of past saved location 
+    $("#location-list").on("click", "button", function(event) {
+      event.preventDefault();
+      var city = $(this).text();
+  
+      getLocationWeather(city, locationSearchList);
+  
+      $("#current-weather").show();
+      $("#forecast-weather").show();
+    });
+  });
+
+        
+         
