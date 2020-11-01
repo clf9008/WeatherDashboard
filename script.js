@@ -39,8 +39,46 @@ function locationSearch(locationSearchList) {
           url: queryURL,
           method: "GET"
         })
-          // Store all of the retrieved data inside of an object called "weather"
+          //once data is retrived store it in as an object called 'weather'
           .then(function(weather) {
-            // Log the queryURL
-            console.log(queryURL);
-         
+        //Log the queryURL
+        console.log(queryURL);
+        //entering a variable into local memeory that caprutres the current conditions
+        var currentMoment = moment();
+        //enter a variable into local memory that will display the current city and month/date/year
+        var displayMoment = $("<h3>");
+        $("#location-name").empty();//city name will start empty and append HTML document with location data for search input
+        $("#location-name").append(
+        displayMoment.text("(" +currentMoment.format("M/D/YYYY") + ")") //display as M/D/YYYY"
+      );
+    //enter a variable into local memory that stores location and appends it to HTML document
+      var locationName = $("<h3>").text(weather.name);
+      $("#location-name").prepend(locationName);
+    //enter a variable into local memory called weatherConditions that will display image of weather for given conditions of a location
+      var weatherConditions = $("<img>");
+      weatherConditions.attr(
+        "src",
+        "https://openweathermap.org/img/w/" + weather.weather[0].icon + ".png"
+      );
+      $("#current-icon").empty();//loads current-icon the page as empty at start
+      $("#current-icon").append(weatherConditions);//appends current icon when location is entered
+
+      $("#current-temp").text("Temperature: " + weather.main.temp + " °F");//display current temperature in farenheight
+      $("#current-humidity").text("Humidity: " + weather.main.humidity + "%");//display current humidity as a %
+      $("#current-wind").text("Wind Speed: " + weather.wind.speed + " MPH");//display current wind-speed in MPH
+    //latitude and longitude of location coordinates are stored in weather object
+      latitude = weather.coord.lat;
+      longitude = weather.coord.lon;
+    //entering a variable into local memory that will query the openweather APIL to display the 5-day forcast of location
+      var queryURL3 =
+        "https://api.openweathermap.org/data/2.5/uvi/forecast?&units=imperial&appid=885e9149105e8901c9809ac018ce8658&q=" +
+        "&lat=" +
+        latitude +
+        "&lon=" +
+        longitude;
+
+      $.ajax({
+        url: queryURL3,
+        method: "GET"
+        // Store all of the retrieved data inside of an object called "uvIndex"
+      
