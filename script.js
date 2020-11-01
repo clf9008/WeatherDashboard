@@ -60,14 +60,34 @@ function getLocationWeather(locaitonName) {
             const forecastEls = document.querySelectorAll(".forecast");
             //for loop to display forecast data from openweather API server
             for (i=0; i<forecastEls.length; i++) {
+                //append the innerHTML document with the following forecast data
                 forecastEls[i].innerHTML = "";
+                //enter constants into block scope for forecasat data from openweather API server
                 const forecastIndex = i*8 + 4;
                 const forecastDate = new Date(response.data.list[forecastIndex].dt * 1000);
                 const forecastDay = forecastDate.getDate();
                 const forecastMonth = forecastDate.getMonth() + 1;
                 const forecastYear = forecastDate.getFullYear();
                 const forecastDateEl = document.createElement("p");
+                //set attributes to forecastDateE1 and append innerHTML document 
                 forecastDateEl.setAttribute("class","mt-3 mb-0 forecast-date");
                 forecastDateEl.innerHTML = forecastMonth + "/" + forecastDay + "/" + forecastYear; //appended inner HTML to display these constants
+                forecastEls[i].append(forecastDateEl);
+                //entering a constant into block scope to display image of weather in forecast
+                const forecastWeatherEl = document.createElement("img");
+                forecastWeatherEl.setAttribute("src","https://openweathermap.org/img/wn/" + response.data.list[forecastIndex].weather[0].icon + "@2x.png");
+                forecastWeatherEl.setAttribute("alt",response.data.list[forecastIndex].weather[0].description);
+                //append the forecast weather with temperature data 
+                forecastEls[i].append(forecastWeatherEl);
+                const forecastTempEl = document.createElement("p"); //entering a constant into block scope that appends HTML to display forecast temp
+                forecastTempEl.innerHTML = "Temp: " + k2f(response.data.list[forecastIndex].main.temp) + " &#176F";
+                //append the forecast weather with humidity data 
+                forecastEls[i].append(forecastTempEl);
+                const forecastHumidityEl = document.createElement("p");
+                forecastHumidityEl.innerHTML = "Humidity: " + response.data.list[forecastIndex].main.humidity + "%";
+                forecastEls[i].append(forecastHumidityEl);
+                }
+            })
+        });  
 
 }
