@@ -1,3 +1,4 @@
+//funciton to append HTML and declare into Global Memory constants of location input, search, history, etc.
 function initPage() {
     const  inputE1 = document.getElementById("location-input");
     const  searchE1 = document.getElementById("location-search");
@@ -13,5 +14,17 @@ function initPage() {
 
     console.log(searchHistory);
 }
+//costant to declare into Global Memory the API Key for the Open Weather API server
+const APIkey = "14fd9df994adf232eec7280aaaedb3db"
 
-cont APIkey = "14fd9df994adf232eec7280aaaedb3db"
+//funciton to get data from API server that has been searched for by the user
+function getLocationWeather(locaitonName) {
+
+    let queryURL = "https://api.openweathermap.org/data/2.5/weather?q=" + locationName + "&appid=" + APIkey;
+    axios.get(queryURL)
+    .then(function(response){
+        
+        console.log(response);
+        
+    })
+}
