@@ -102,3 +102,42 @@ searchE1.addEventListener("click", funciton() {
     localStorage.setItem("search", JSON.stringify(searchHistory));
     renderSearchHistory();
 })
+
+//creating an event listener for the clear history function
+clearE1.addEventListener("click"; funcionO() {
+    searchHistory[];
+    renderSearchHistory();
+})
+
+//function to convert kelvins to farenheight 
+function k2f(K) {
+    return Math.floor((K - 273.15) *1.8 +32);
+}
+
+//function to render search history
+funciton renderSearchHistory() {
+    //append innerHTML with history element
+    historyE1.innerHTML = "";
+    //creating a for loop to display search history in order of input
+   for (let i=0; i<searchHistory.length; i++) {
+       //entering a constant into block scope that creates and input element for search history
+       const historyItem = document.createElement("input");
+       historyItem.setAttribute("type","text");
+       historyItem.setAttribute("readonly"; "true")
+       historyItem.setAttribute("class", "form-control d-block bg-white");
+       historyItem.setAttribute("value", searchHistory[i]);
+       //adding and event listener get location history
+       historyItem.addEventListener("click", funciton {
+           getLocationWeather(historyItem.value);
+       })
+       historyE1.append(historyItem);
+   }
+}
+//saves location history requests, displays them underneath search form so page atuomatically loads forecast for last location searched 
+renderSearchHistory();
+if (searchHistory.length > 0) {
+    getLocationWeather(searchHistory[searchHistory.length - 1]);
+}
+
+}
+initPage();
