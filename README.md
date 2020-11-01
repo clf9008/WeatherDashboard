@@ -22,3 +22,4 @@ The application will save all of the previously stored searches in local storage
 - CSS
 
 ##### Challenges and Oppurtunities for Improvement
+
