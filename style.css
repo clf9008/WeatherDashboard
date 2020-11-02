@@ -1,10 +1,11 @@
 body {
-    font-family: "Open Sans", sans-serif;
+    font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
   }
   
   .heading {
-    background-color: #3c3c3c;
+    background-color: blue;
     color: #ffffff;
+    font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif; 
     text-align: center;
     padding: 10px;
   }
