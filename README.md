@@ -13,7 +13,7 @@ The application will save all of the previously stored searches in local storage
 [Deployed Application Link](https://clf9008.github.io/WeatherDashboard/)
 
 
-//img of deployed application
+![Image of Weather Dashboard](https://github.com/clf9008/WeatherDashboard/blob/main/WeatherDashboardImg.jpg.png "Weather Dashboard")
 
 #### Outside Resources Used
 
