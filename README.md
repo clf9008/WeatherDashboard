@@ -24,3 +24,4 @@ The application will save all of the previously stored searches in local storage
 
 ##### Challenges and Oppurtunities for Improvement
 
+There were challenges in ensuring the saved data in the local storerage displayed on the page, however, these issues have been cleared up. In future iterations, a card could be added above the weather display dashboard but below the header that shows a live image via webcam of the searched location. 
