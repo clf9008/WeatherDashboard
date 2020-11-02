@@ -1,27 +1,25 @@
-//function to create a location search list that will be stored into global memory
-function locationSearch(locationSearchList) {
-    $("#search-list").empty();//populate empty
-//entering a variable into block scope creates a list that will store what locations are searched and store them as a list
-    var keys = object.keys(locationSearchList);
-    for (var i = 0; i < keys.length; i++){
-        var locationEntry = $("<button>");
-        locationEntry.addClass("list-group-item list-group-item-action");
-//entering a variable into block scope that will split the string value to lowercase or uppercase
-        var splitStr = keys[i].toLowerCase().split(" ");
-        for (var j = 0; j < splitStr.lentgh; j++) {
-            splitStr[j] =
-            splitStr[j].charAt(0).toUpperCase() + splitStr[j].substring(1);
-        }
-        //entering a variable into block scope that will add join searches to list that are capitalized
-        var locationUppercase= splitStr.join(" ");
-        locationEntry.text(titleCasedCity);
-    //append the html document to display a search list for search locations
-        $("#search-list").append(locationEntry);
+function createCityList(citySearchList) {
+    $("#city-list").empty();
+  
+    var keys = Object.keys(citySearchList);
+    for (var i = 0; i < keys.length; i++) {
+      var cityListEntry = $("<button>");
+      cityListEntry.addClass("list-group-item list-group-item-action");
+  
+      var splitStr = keys[i].toLowerCase().split(" ");
+      for (var j = 0; j < splitStr.length; j++) {
+        splitStr[j] =
+          splitStr[j].charAt(0).toUpperCase() + splitStr[j].substring(1);
+      }
+      var titleCasedCity = splitStr.join(" ");
+      cityListEntry.text(titleCasedCity);
+  
+      $("#city-list").append(cityListEntry);
     }
-}
+  }
 //entering a function into global memory that will fetch the weather of searched location
-function getLocationWeather(city, locationSearchList) {
-        createSearchList(locationSearchList);
+function getLocationWeather(city, citySearchList) {
+        createCityList(citySearchList);
       //entering a variable into block scope that quers the openweathermap API for the current weather conditions
         var queryURL =
           "https://api.openweathermap.org/data/2.5/weather?&units=imperial&appid=d66159be26bc887a3527fc689ffc14e6&q=" +
@@ -47,13 +45,13 @@ function getLocationWeather(city, locationSearchList) {
         var currentMoment = moment();
         //enter a variable into local memory that will display the current city and month/date/year
         var displayMoment = $("<h3>");
-        $("#location-name").empty();//city name will start empty and append HTML document with location data for search input
-        $("#location-name").append(
+        $("#city-name").empty();//city name will start empty and append HTML document with location data for search input
+        $("#city-name").append(
         displayMoment.text("(" +currentMoment.format("M/D/YYYY") + ")") //display as M/D/YYYY"
       );
     //enter a variable into local memory that stores location and appends it to HTML document
-      var locationName = $("<h3>").text(weather.name);
-      $("#location-name").prepend(locationName);
+        var cityName = $("<h3>").text(weather.name);
+        $("#city-name").prepend(cityName);
     //enter a variable into local memory called weatherConditions that will display image of weather for given conditions of a location
       var weatherConditions = $("<img>");
       weatherConditions.attr(
@@ -71,7 +69,7 @@ function getLocationWeather(city, locationSearchList) {
       longitude = weather.coord.lon;
     //entering a variable into local memory that will query the openweather APIL to display the 5-day forcast of location
       var queryURL3 =
-        "https://api.openweathermap.org/data/2.5/uvi/forecast?&units=imperial&appid=885e9149105e8901c9809ac018ce8658&q=" +
+        "https://api.openweathermap.org/data/2.5/uvi/forecast?&units=imperial&appid=d66159be26bc887a3527fc689ffc14e6&q=" +
         "&lat=" +
         latitude +
         "&lon=" +
@@ -108,11 +106,10 @@ function getLocationWeather(city, locationSearchList) {
   
               console.log("#forecast-date" + forecastPosition);
   
-              $("#forecast-date" + forecastPosition).empty(); //forecast date will load empty
-              $("#forecast-date" + forecastPosition).append( //append forcast date when a location is entered
-                forecastDate.text(nowMoment.add(1, "days").format("M/D/YYYY")) //display forcast date m/d/yyyy
-              );
-            //declaring a variable for local memory to display the forecast icon
+              $("#forecast-date" + forecastPosition).empty();
+            $("#forecast-date" + forecastPosition).append(
+              forecastDate.text(currentMoment.add(1, "days").format("M/D/YYYY"))
+            );//declaring a variable for local memory to display the forecast icon
               var forecastDisplay = $("<img>");
               forecastDisplay.attr(
                 "src",
@@ -122,7 +119,7 @@ function getLocationWeather(city, locationSearchList) {
               );
             //forecast icon will load empty and be appended as locations are entered
               $("#forecast-icon" + forecastPosition).empty();
-              $("#forecast-icon" + forecastPosition).append(forecastIcon);
+              $("#forecast-icon" + forecastPosition).append(forecastDisplay);
   
               console.log(forecast.list[i].weather[0].icon);
             //append html document with the forecast temperature and display in fahrenheit 
@@ -146,34 +143,34 @@ function getLocationWeather(city, locationSearchList) {
 //the funciton will not run until all of the elements on the HTML document have loaded
   $(document).ready(function() {
     //declaring a variable for local memory that saves the location search list to local storeage
-    var locationSearchListStringified = localStorage.getItem("locationSearchList");
+    var citySearchListStringified = localStorage.getItem("citySearchList");
     //declaring a variable for local memory that parse data from location search list
-    var locationSearchList = JSON.parse(locationSearchListStringified);
+    var citySearchList = JSON.parse(citySearchListStringified);
     //if the location search list is equal to the value null, load location search list function
-    if (locationSearchList == null) {
-      locationSearchList = {}; 
-    }
-  
-    locationSearch(locationSearchList);
+    if (citySearchList == null) {
+        citySearchList = {};
+      }
+    
+      createCityList(citySearchList);
   //hide the current weather and forecast weather if the location search list is null
     $("#current-weather").hide();
     $("#forecast-weather").hide();
   //appending the inner html document with an eventer listener for the search button
-    $("#search-button").on("click", function(event) {
-      event.preventDefault();//prevents default location from loading
+  $("#search-button").on("click", function(event) {
+    event.preventDefault();//prevents default location from loading
       //declaring a variable for local memory that will store location input as lowercase
-      var city = $("#location-input")
-        .val()
-        .trim()
-        .toLowerCase();
+      var city = $("#city-input")
+      .val()
+      .trim()
+      .toLowerCase();
      //checking to see if there is any text entered into the search field
       if (city != "") {
        
       //if there location search list has data entered into it store that item in local storeage
-        locationSearchList[city] = true; 
-        localStorage.setItem("locationSearchList", JSON.stringify(locationSearchList));
+        citySearchList[city] = true; 
+        localStorage.setItem("locationSearchList", JSON.stringify(citySearchList));
     //using the getLocationWeather funciton to get current weather and forecast for location search list
-        getLocationWeather(city, locationSearchList);
+        getLocationWeather(city, citySearchList);
     //append inner html document to display the locations current weather and forecasated weather
       $("#current-weather").show();
       $("#forecast-weather").show();
@@ -183,13 +180,10 @@ function getLocationWeather(city, locationSearchList) {
     $("#location-list").on("click", "button", function(event) {
       event.preventDefault();
       var city = $(this).text();
-  
+        //using the getLocationWeather funciton to get current weather and forecast for location search list
       getLocationWeather(city, locationSearchList);
-  
-      $("#current-weather").show();
-      $("#forecast-weather").show();
+        //append inner html document to display the locations current weather and forecasated weather
+        $("#current-weather").show();
+        $("#forecast-weather").show();
     });
   });
-
-        
-         
