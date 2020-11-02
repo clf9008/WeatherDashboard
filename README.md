@@ -17,7 +17,7 @@ The application will save all of the previously stored searches in local storage
 
 #### Outside Resources Used
 
-- OpenWeather API (http:website)
+- [OpenWeather API](https://openweathermap.org/api)
 - JavaScript
 - Jquery
 - CSS
